@@ -3,6 +3,8 @@
 use App\Models\User;
 use Livewire\Volt\Volt;
 
+use function Pest\Laravel\assertSoftDeleted;
+
 test('profile page is displayed', function () {
     $user = User::factory()->create();
 
@@ -69,7 +71,8 @@ test('user can delete their account', function () {
         ->assertRedirect('/');
 
     $this->assertGuest();
-    $this->assertNull($user->fresh());
+
+    assertSoftDeleted($user);
 });
 
 test('correct password must be provided to delete account', function () {
