@@ -1,8 +1,9 @@
 <?php
 
+use App\Models\Link;
 use App\Models\User;
-use Livewire\Volt\Volt;
 
+use Livewire\Volt\Volt;
 use function Pest\Laravel\assertSoftDeleted;
 
 test('profile page is displayed', function () {
@@ -73,6 +74,31 @@ test('user can delete their account', function () {
     $this->assertGuest();
 
     assertSoftDeleted($user);
+});
+
+test('links are deleted when the user is deleted', function () {
+    $user = User::factory()->create();
+    $links = Link::factory()->count(rand(3, 5))->create([
+        'user_id' => $user->id,
+    ]);
+
+    $this->actingAs($user);
+
+    $component = Volt::test('profile.delete-user-form')
+        ->set('password', 'password')
+        ->call('deleteUser');
+
+    $component
+        ->assertHasNoErrors()
+        ->assertRedirect('/');
+
+    $this->assertGuest();
+
+    assertSoftDeleted($user);
+
+    $links->each(function ($link) {
+        assertSoftDeleted($link);
+    });
 });
 
 test('correct password must be provided to delete account', function () {

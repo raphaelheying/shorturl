@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Actions\Logout;
+use App\Models\Link;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Volt\Component;
 
@@ -14,7 +15,9 @@ new class extends Component
             'password' => ['required', 'string', 'current_password'],
         ]);
 
+        $user_id = Auth::user()->id;
         tap(Auth::user(), $logout(...))->delete();
+        $links = Link::where('user_id', $user_id)->delete();
 
         $this->redirect('/', navigate: true);
     }
