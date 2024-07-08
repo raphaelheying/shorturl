@@ -17,6 +17,7 @@ class VisitFactory extends Factory
             'device'      => fake()->word,
             'device_type' => fake()->word,
             'agent'       => fake()->word,
+            'created_at'  => fake()->dateTimeBetween('-1 year'),
         ];
     }
 }
