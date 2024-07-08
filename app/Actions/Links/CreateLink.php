@@ -16,7 +16,7 @@ class CreateLink
 
         $link->short_url = Str::random(7);
 
-        while (Link::where('short_url', $link->short_url)->exists() && $retries > 0) {
+        while (Link::where('short_url', $link->short_url)->withTrashed()->exists() && $retries > 0) {
             $link->short_url = Str::random(7);
             $retries--;
         }
