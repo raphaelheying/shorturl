@@ -33,6 +33,8 @@ This project is a simple web application that allows users to create short URLs 
 
 `php artisan migrate` => run the migrations
 
+`php artisan key:generate` => set the application key
+
 `php artisan db:seed` => if you want to seed the database with some data, this will create some links and visits for user `raphael.h@hotmail.com` : `password`
 
 ### Running the project
