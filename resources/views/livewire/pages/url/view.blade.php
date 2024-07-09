@@ -1,5 +1,6 @@
 <?php
 
+use App\Actions\Links\DeleteLink;
 use App\Models\Link;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
@@ -26,6 +27,14 @@ new #[Layout('layouts.app')] class extends Component {
             'visits' => $this->link->visits()->paginate(20),
         ];
     }
+
+    public function deleteLink(DeleteLink $action): void
+    {
+        $action->handle($this->link);
+
+        session()->flash('message', 'Link deleted successfully');
+        $this->redirectRoute('dashboard');
+    }
 }; ?>
 
 
@@ -47,7 +56,9 @@ new #[Layout('layouts.app')] class extends Component {
                         {{ route('url', $link->short_url) }} - {{ $link->visits->count() }} {{ str()->plural('visit', $link->visits->count()) }}
                     </p>
                 </header>
+            </section>
 
+            <section class="space-y-6">
                 @if ($link->visits->count() > 0)
                     <div class="relative overflow-x-auto my-8">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -82,6 +93,23 @@ new #[Layout('layouts.app')] class extends Component {
                     </div>
                 @endif
             </section>
+
+
+
+            <section class="space-y-6">
+                <header>
+                    <h2 class="text-lg font-medium text-gray-900">
+                        {{ __('Delete Link') }}
+                    </h2>
+
+                    <p class="mt-1 text-sm text-gray-600">
+                        {{ __('If you delete this link, all of its visits will be permanently deleted.') }}
+                    </p>
+                </header>
+
+                <x-danger-button wire:submit="deleteLink">{{ __('Delete Link') }}</x-danger-button>
+            </section>
+
         </div>
     </div>
 </div>

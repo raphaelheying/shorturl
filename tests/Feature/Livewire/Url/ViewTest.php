@@ -35,6 +35,16 @@ it('should paginate visits', function () {
         ->assertSee($this->link->visits->last()->ip_address);
 });
 
+it('should be possible to delete link', function () {
+    Volt::test('pages.url.view', ['link' => $this->link])
+        ->call('deleteLink')
+        ->assertHasNoErrors()
+        ->assertSessionHas('message', 'Link deleted successfully')
+        ->assertRedirect(route('dashboard'));
+
+    $this->assertSoftDeleted($this->link);
+});
+
 it('should be possible to see url only if user is the owner', function () {
     $nonOwnerUser = User::factory()->create();
     actingAs($nonOwnerUser);

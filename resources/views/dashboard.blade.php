@@ -2,6 +2,11 @@
     <div class="py-12">
         <div class="container mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+                @if (session()->has('message'))
+                    <div class="bg-green-100 border border-green-500 text-green-700 px-4 py-3 mb-8" role="alert">
+                        <p class="text-sm">{{ session('message') }}</p>
+                    </div>
+                @endif
                 <section>
                     <header>
                         <h2 class="text-lg font-medium text-gray-900">
